@@ -36,28 +36,69 @@ def import_and_predict(img_path, model):
     return prediction
 
 
-st.write("""
-         # SOLUT('eye')ON
-         """
-         )
 
-st.write("This is a image classification web app to predict ")
 
-file = st.file_uploader("Please upload an image file", type=["jpg", "png","jpeg"])
-#
-if file is None:
-    st.text("You haven't uploaded an image file")
-else:
-    image = Image.open(file)
-    st.image(image, use_column_width=True)
-    prediction = import_and_predict(image, model)
+
+res=st.sidebar.radio("Navigation here!",["Home","Glaucoma","Drusen","Diabetic retinopathy","About"])
+
+
+if res=="Home":
+    st.write("""
+             # SOLUT('eye')ON
+             """)
+    st.write("displaying home")    
     
-    if prediction[0][1]>0.5:
-        st.write("It is a normal image!Don't worry")
-    elif prediction[0][1]<0.5:
-        st.write("Your eye has gluacoma, consult doctor immediately")
+elif res=="Glaucoma":
+    st.write("""
+                 #   Glaucoma detection
+             """
+                 )
+
+  
+    file = st.file_uploader("Please upload an image file", type=["jpg", "png","jpeg"])
+        #
+    if file is None:
+            st.text("You haven't uploaded an image file")
+        
     else:
-        st.write("give correct image!")
+            image = Image.open(file)
+            st.image(image, use_column_width=True)
+            
+            prediction = import_and_predict(image, model)
+           
+            if prediction[0][1]>0.5:
+                st.write("It is a normal image!Don't worry")
+            elif prediction[0][1]<0.5:
+                st.write("Your eye has gluacoma, consult doctor immediately")
+            else:
+                st.write("give correct image!")
     
-    st.text("Probability (0: glaucoma, 1: normal)")
-    st.write(prediction)
+            st.text("Probability (0: glaucoma, 1: normal)")
+            st.write(prediction)
+        
+elif res=="Drusen":
+     st.write("""
+                 #   Drusen detection
+             """
+                 )
+
+     file1 = st.file_uploader("Please upload an image file", type=["jpg", "png","jpeg"])
+        #
+     if file1 is None:
+            st.text("You haven't uploaded an image file")
+        
+     else:
+            image = Image.open(file1)
+            st.image(image, use_column_width=True)
+            model=load_model("dmodelcnn.h5")
+            prediction = import_and_predict(image, model)
+           
+            if prediction[0][1]>0.5:
+                st.write("It is a normal image!Don't worry")
+            elif prediction[0][1]<0.5:
+                st.write("Your eye has drusen, consult doctor immediately")
+            else:
+                st.write("give correct image!")
+    
+            st.text("Probability (0: drusen, 1: normal)")
+            st.write(prediction)
