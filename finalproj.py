@@ -39,7 +39,7 @@ def import_and_predict(img_path, model):
 
 
 
-res=st.sidebar.radio("Navigation here!",["Home","Glaucoma","Drusen","Diabetic retinopathy","About"])
+res=st.sidebar.radio("Navigate here!",["Home","Glaucoma","Drusen","Diabetic retinopathy","About"])
 
 
 if res=="Home":
@@ -102,3 +102,26 @@ elif res=="Drusen":
     
             st.text("Probability (0: drusen, 1: normal)")
             st.write(prediction)
+
+elif res=="Diabetic retinopathy":
+    st.write("""
+             #  Diabetic retinopathy detection
+             """)
+    file2=st.file_uploader("Please upload an image file",type=["jpg","png","jpeg"])
+    if file2 is None:
+        st.text("You haven't uploaded an image file")
+    else:
+        image=Image.open(file2)
+        st.image(image,use_column_width=True)
+        model=load_model("diabeticretinomodel.h5")
+        prediction=import_and_predict(image,model)
+        
+        if prediction[0][1]>=0.5:
+            st.write("Your eye  has symptoms of diabetic retinopathy")
+        elif prediction[0][1]<0.5:
+            st.write("Your eye doesn't symptoms of diabetic retinopathy") 
+            
+        st.text("Probability (0:No symptoms, 1: Symptoms)")
+        st.write(prediction)
+    
+    
